@@ -1,5 +1,6 @@
 host-name:
-	host: 		ftp.domain.com
-	login: 		ftp-user
-	pw:	        password
-	root_dir: 	/
+ host: ftp.domain.com
+ login: ftp-user
+ pw: password
+ root_dir: /
+ backup_dir: /home/user/backups
