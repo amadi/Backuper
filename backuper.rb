@@ -13,9 +13,10 @@ class Backuper
 
 	def listFolders(dir = @root_dir)
 		@ftp.chdir(dir)
-		@regexp = %r{(?<isDir>.{1})(?<mode>.{9})\s+(?<links>\d+)\s+(?<owner>\w+)\s+(?<group>\w+)\s+(?<size>\d+)\s+(?<modifed>\w+\s+\d+\s+.+)\s(?<name>.+)}x
+		@regexp = %r{(?<isDir>.{1})(?<mode>.{9})\s+(?<links>\d+)\s+(?<owner>\w+)\s+(?<group>\w+)\s+(?<size>\d+)\s+(?<modifed>\w+\s+\d+\s+\S+)\s(?<name>.+)}x
 		@ftp.ls("-al").each do |item|
 			r = @regexp.match(item)
+			if r[:isDir]=='l' then next end
 			if (r[:isDir] == "d") and (r[:name]!='.' and r[:name]!='..')
 				@folders.push("#{dir}/#{r[:name]}")
 			end
@@ -81,7 +82,10 @@ servers.each do |server, field|
 	#get dirs of ftp
 	ftp.listFolders
 	puts "Request directories of #{ftp.addr}"
-	ftp.folders.each {|folder| ftp.listFolders(folder)}
+	ftp.folders.each do |folder|
+		puts folder
+		ftp.listFolders(folder)
+	end
 	puts "Count of folders: #{ftp.folders.length}"
 
 	#get files
