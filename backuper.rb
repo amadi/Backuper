@@ -83,7 +83,6 @@ servers.each do |server, field|
 	ftp.listFolders
 	puts "Request directories of #{ftp.addr}"
 	ftp.folders.each do |folder|
-		puts folder
 		ftp.listFolders(folder)
 	end
 	puts "Count of folders: #{ftp.folders.length}"
